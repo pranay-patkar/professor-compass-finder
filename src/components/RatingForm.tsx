@@ -5,11 +5,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Professor, AcademicYear, AttendancePolicy } from "@/data/types";
 import { academicYearLabels } from "@/data/professors";
 import { useToast } from "@/hooks/use-toast";
-import { Star, Flame, Sparkles } from "lucide-react";
 
 const grades = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F"];
 const attendancePolicies: AttendancePolicy[] = ["Strict", "Moderate", "Chill"];
@@ -47,109 +45,120 @@ export function RatingForm({ professor }: RatingFormProps) {
 
   if (!open) {
     return (
-      <Button onClick={() => setOpen(true)} className="w-full mt-4">
+      <Button
+        onClick={() => setOpen(true)}
+        className="w-full mt-4 uppercase tracking-wider text-xs border-2 border-foreground bg-primary text-primary-foreground hover:bg-primary/90 rounded-none shadow-[3px_3px_0_hsl(var(--foreground))] hover:shadow-[1px_1px_0_hsl(var(--foreground))] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+      >
         Rate this Professor
       </Button>
     );
   }
 
   return (
-    <Card className="mt-4 border-quality/30">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-base">Submit a Rating</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <Label className="text-xs">Course/Subject *</Label>
-              <Select value={form.course} onValueChange={v => setForm(f => ({ ...f, course: v }))}>
-                <SelectTrigger className="h-9 text-sm mt-1"><SelectValue placeholder="Select course" /></SelectTrigger>
-                <SelectContent>
-                  {professor.subjects.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label className="text-xs">Year/Semester *</Label>
-              <Select value={form.year} onValueChange={v => setForm(f => ({ ...f, year: v as AcademicYear }))}>
-                <SelectTrigger className="h-9 text-sm mt-1"><SelectValue placeholder="Select year" /></SelectTrigger>
-                <SelectContent>
-                  {yearKeys.map(y => <SelectItem key={y} value={y}>{academicYearLabels[y]}</SelectItem>)}
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label className="text-xs">Semester *</Label>
-              <Input
-                className="h-9 text-sm mt-1"
-                placeholder="e.g., Fall 2024"
-                value={form.semester}
-                onChange={e => setForm(f => ({ ...f, semester: e.target.value }))}
-              />
-            </div>
-            <div>
-              <Label className="text-xs">Grade Received (optional)</Label>
-              <Select value={form.grade} onValueChange={v => setForm(f => ({ ...f, grade: v }))}>
-                <SelectTrigger className="h-9 text-sm mt-1"><SelectValue placeholder="Select grade" /></SelectTrigger>
-                <SelectContent>
-                  {grades.map(g => <SelectItem key={g} value={g}>{g}</SelectItem>)}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
+    <div className="mt-4 border-2 border-foreground bg-card p-4">
+      <h3 className="font-display text-xs uppercase tracking-wider mb-3">Submit a Rating</h3>
+      <form onSubmit={handleSubmit} className="space-y-3">
+        <div className="grid grid-cols-2 gap-2">
           <div>
-            <Label className="text-xs">Attendance Policy *</Label>
-            <Select value={form.attendance} onValueChange={v => setForm(f => ({ ...f, attendance: v as AttendancePolicy }))}>
-              <SelectTrigger className="h-9 text-sm mt-1"><SelectValue placeholder="Select policy" /></SelectTrigger>
-              <SelectContent>
-                {attendancePolicies.map(a => <SelectItem key={a} value={a}>{a}</SelectItem>)}
+            <Label className="text-2xs uppercase tracking-widest font-bold">Course *</Label>
+            <Select value={form.course} onValueChange={v => setForm(f => ({ ...f, course: v }))}>
+              <SelectTrigger className="h-8 text-xs mt-1 border-2 border-foreground rounded-none"><SelectValue placeholder="Select" /></SelectTrigger>
+              <SelectContent className="border-2 border-foreground rounded-none">
+                {professor.subjects.map(s => <SelectItem key={s} value={s} className="text-xs uppercase">{s}</SelectItem>)}
               </SelectContent>
             </Select>
           </div>
-
-          <div className="space-y-3">
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <Star className="h-3.5 w-3.5 text-quality" />
-                <Label className="text-xs">Overall Rating: {form.rating}/5</Label>
-              </div>
-              <Slider value={[form.rating]} min={1} max={5} step={1} onValueChange={([v]) => setForm(f => ({ ...f, rating: v }))} />
-            </div>
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <Flame className="h-3.5 w-3.5 text-difficulty" />
-                <Label className="text-xs">Difficulty: {form.difficulty}/5</Label>
-              </div>
-              <Slider value={[form.difficulty]} min={1} max={5} step={1} onValueChange={([v]) => setForm(f => ({ ...f, difficulty: v }))} />
-            </div>
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <Sparkles className="h-3.5 w-3.5 text-engagement" />
-                <Label className="text-xs">Engagement: {form.engagement}/5</Label>
-              </div>
-              <Slider value={[form.engagement]} min={1} max={5} step={1} onValueChange={([v]) => setForm(f => ({ ...f, engagement: v }))} />
-            </div>
-          </div>
-
           <div>
-            <Label className="text-xs">Comment</Label>
-            <Textarea
-              className="mt-1 text-sm"
-              placeholder="Share your experience..."
-              value={form.comment}
-              onChange={e => setForm(f => ({ ...f, comment: e.target.value }))}
-              rows={3}
+            <Label className="text-2xs uppercase tracking-widest font-bold">Year *</Label>
+            <Select value={form.year} onValueChange={v => setForm(f => ({ ...f, year: v as AcademicYear }))}>
+              <SelectTrigger className="h-8 text-xs mt-1 border-2 border-foreground rounded-none"><SelectValue placeholder="Select" /></SelectTrigger>
+              <SelectContent className="border-2 border-foreground rounded-none">
+                {yearKeys.map(y => <SelectItem key={y} value={y} className="text-xs uppercase">{academicYearLabels[y]}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label className="text-2xs uppercase tracking-widest font-bold">Semester *</Label>
+            <Input
+              className="h-8 text-xs mt-1 border-2 border-foreground rounded-none"
+              placeholder="e.g., Fall 2024"
+              value={form.semester}
+              onChange={e => setForm(f => ({ ...f, semester: e.target.value }))}
             />
           </div>
-
-          <div className="flex gap-2">
-            <Button type="submit" className="flex-1">Submit Review</Button>
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+          <div>
+            <Label className="text-2xs uppercase tracking-widest font-bold">Grade (opt.)</Label>
+            <Select value={form.grade} onValueChange={v => setForm(f => ({ ...f, grade: v }))}>
+              <SelectTrigger className="h-8 text-xs mt-1 border-2 border-foreground rounded-none"><SelectValue placeholder="Select" /></SelectTrigger>
+              <SelectContent className="border-2 border-foreground rounded-none">
+                {grades.map(g => <SelectItem key={g} value={g} className="text-xs">{g}</SelectItem>)}
+              </SelectContent>
+            </Select>
           </div>
-        </form>
-      </CardContent>
-    </Card>
+        </div>
+
+        <div>
+          <Label className="text-2xs uppercase tracking-widest font-bold">Attendance *</Label>
+          <div className="flex gap-1 mt-1">
+            {attendancePolicies.map(a => (
+              <button
+                key={a}
+                type="button"
+                onClick={() => setForm(f => ({ ...f, attendance: a }))}
+                className={`flex-1 py-1.5 text-2xs uppercase tracking-wider border-2 transition-all ${
+                  form.attendance === a
+                    ? "border-foreground bg-foreground text-background font-bold"
+                    : "border-border text-muted-foreground hover:border-foreground"
+                }`}
+              >
+                {a}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          {[
+            { key: "rating", label: "Rating", color: "text-primary" },
+            { key: "difficulty", label: "Difficulty", color: "text-accent" },
+            { key: "engagement", label: "Engagement", color: "text-engagement" },
+          ].map(({ key, label, color }) => (
+            <div key={key}>
+              <div className="flex items-center justify-between mb-0.5">
+                <Label className="text-2xs uppercase tracking-widest font-bold">{label}</Label>
+                <span className={`text-xs font-bold tabular-nums ${color}`}>{form[key as keyof typeof form]}/5</span>
+              </div>
+              <Slider
+                value={[form[key as keyof typeof form] as number]}
+                min={1}
+                max={5}
+                step={1}
+                onValueChange={([v]) => setForm(f => ({ ...f, [key]: v }))}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div>
+          <Label className="text-2xs uppercase tracking-widest font-bold">Comment</Label>
+          <Textarea
+            className="mt-1 text-xs border-2 border-foreground rounded-none"
+            placeholder="Share your experience..."
+            value={form.comment}
+            onChange={e => setForm(f => ({ ...f, comment: e.target.value }))}
+            rows={3}
+          />
+        </div>
+
+        <div className="flex gap-2">
+          <Button type="submit" className="flex-1 uppercase tracking-wider text-xs border-2 rounded-none shadow-[3px_3px_0_hsl(var(--foreground))] hover:shadow-[1px_1px_0_hsl(var(--foreground))] hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
+            Submit
+          </Button>
+          <Button type="button" variant="outline" onClick={() => setOpen(false)} className="uppercase tracking-wider text-xs border-2 border-foreground rounded-none">
+            Cancel
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 }

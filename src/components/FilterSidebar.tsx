@@ -1,12 +1,10 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { FilterState, Department, AcademicYear, TeachingStyle } from "@/data/types";
 import { departments, academicYearLabels } from "@/data/professors";
-import { Filter, RotateCcw } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 
 interface FilterSidebarProps {
   filters: FilterState;
@@ -35,60 +33,58 @@ export function FilterSidebar({ filters, onChange }: FilterSidebarProps) {
     onChange({ departments: [], academicYears: [], ratingThreshold: 0, teachingStyle: "All" });
 
   return (
-    <aside className="w-72 shrink-0 border-r bg-card p-5 space-y-6 overflow-y-auto h-[calc(100vh-3.5rem)]">
+    <aside className="w-64 shrink-0 border-r-3 border-foreground bg-card p-3 space-y-4 overflow-y-auto h-[calc(100vh-3rem)]">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 font-semibold text-foreground">
-          <Filter className="h-4 w-4" />
-          Filters
-        </div>
-        <Button variant="ghost" size="sm" onClick={reset} className="text-xs text-muted-foreground h-7">
-          <RotateCcw className="h-3 w-3 mr-1" /> Reset
+        <span className="font-display text-xs uppercase tracking-wider text-foreground">Filters</span>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={reset}
+          className="text-2xs h-6 px-2 uppercase tracking-wider border-2"
+        >
+          <RotateCcw className="h-3 w-3 mr-0.5" /> Reset
         </Button>
       </div>
 
-      <Separator />
-
-      <div>
-        <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 block">
+      <div className="border-t-2 border-foreground pt-3">
+        <Label className="text-2xs font-bold uppercase tracking-widest text-muted-foreground mb-2 block">
           Department
         </Label>
-        <div className="space-y-2">
+        <div className="space-y-1">
           {departments.map(dept => (
-            <label key={dept} className="flex items-center gap-2 cursor-pointer text-sm">
+            <label key={dept} className="flex items-center gap-2 cursor-pointer text-xs hover:bg-muted px-1 py-0.5 transition-colors">
               <Checkbox
                 checked={filters.departments.includes(dept)}
                 onCheckedChange={() => toggleDept(dept)}
+                className="border-2 border-foreground rounded-none"
               />
-              <span>{dept}</span>
+              <span className="uppercase tracking-wide text-2xs">{dept}</span>
             </label>
           ))}
         </div>
       </div>
 
-      <Separator />
-
-      <div>
-        <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 block">
+      <div className="border-t-2 border-foreground pt-3">
+        <Label className="text-2xs font-bold uppercase tracking-widest text-muted-foreground mb-2 block">
           Academic Year
         </Label>
-        <div className="space-y-2">
+        <div className="space-y-1">
           {yearKeys.map(year => (
-            <label key={year} className="flex items-center gap-2 cursor-pointer text-sm">
+            <label key={year} className="flex items-center gap-2 cursor-pointer text-xs hover:bg-muted px-1 py-0.5 transition-colors">
               <Checkbox
                 checked={filters.academicYears.includes(year)}
                 onCheckedChange={() => toggleYear(year)}
+                className="border-2 border-foreground rounded-none"
               />
-              <span>{academicYearLabels[year]}</span>
+              <span className="uppercase tracking-wide text-2xs">{academicYearLabels[year]}</span>
             </label>
           ))}
         </div>
       </div>
 
-      <Separator />
-
-      <div>
-        <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 block">
-          Minimum Rating: {filters.ratingThreshold > 0 ? `${filters.ratingThreshold}+` : "Any"}
+      <div className="border-t-2 border-foreground pt-3">
+        <Label className="text-2xs font-bold uppercase tracking-widest text-muted-foreground mb-2 block">
+          Min Rating: {filters.ratingThreshold > 0 ? `${filters.ratingThreshold}+` : "Any"}
         </Label>
         <Slider
           value={[filters.ratingThreshold]}
@@ -96,33 +92,33 @@ export function FilterSidebar({ filters, onChange }: FilterSidebarProps) {
           max={5}
           step={0.5}
           onValueChange={([v]) => onChange({ ...filters, ratingThreshold: v })}
-          className="mt-2"
+          className="mt-1"
         />
-        <div className="flex justify-between text-xs text-muted-foreground mt-1">
+        <div className="flex justify-between text-2xs text-muted-foreground mt-1 uppercase">
           <span>Any</span>
           <span>5.0</span>
         </div>
       </div>
 
-      <Separator />
-
-      <div>
-        <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 block">
+      <div className="border-t-2 border-foreground pt-3">
+        <Label className="text-2xs font-bold uppercase tracking-widest text-muted-foreground mb-2 block">
           Teaching Style
         </Label>
-        <Select
-          value={filters.teachingStyle}
-          onValueChange={(v) => onChange({ ...filters, teachingStyle: v as TeachingStyle | "All" })}
-        >
-          <SelectTrigger className="h-9 text-sm">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {teachingStyles.map(s => (
-              <SelectItem key={s} value={s}>{s}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="space-y-0.5">
+          {teachingStyles.map(s => (
+            <button
+              key={s}
+              onClick={() => onChange({ ...filters, teachingStyle: s as TeachingStyle | "All" })}
+              className={`block w-full text-left px-2 py-1 text-2xs uppercase tracking-wider border-2 transition-colors ${
+                filters.teachingStyle === s
+                  ? "border-foreground bg-foreground text-background font-bold"
+                  : "border-transparent text-muted-foreground hover:border-foreground hover:text-foreground"
+              }`}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
       </div>
     </aside>
   );
