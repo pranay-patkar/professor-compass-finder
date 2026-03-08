@@ -1,4 +1,4 @@
-import { Star } from "lucide-react";
+import { RatingBar } from "./RatingBar";
 
 interface StarRatingProps {
   rating: number;
@@ -7,26 +7,10 @@ interface StarRatingProps {
   className?: string;
 }
 
-export function StarRating({ rating, max = 5, size = 16, className = "" }: StarRatingProps) {
+export function StarRating({ rating, max = 5, className = "" }: StarRatingProps) {
   return (
-    <div className={`flex items-center gap-0.5 ${className}`}>
-      {Array.from({ length: max }, (_, i) => {
-        const filled = i < Math.floor(rating);
-        const partial = !filled && i < rating;
-        return (
-          <Star
-            key={i}
-            size={size}
-            className={
-              filled
-                ? "fill-quality text-quality"
-                : partial
-                ? "fill-quality/50 text-quality"
-                : "text-muted-foreground/30"
-            }
-          />
-        );
-      })}
+    <div className={`w-24 ${className}`}>
+      <RatingBar value={rating} max={max} color="quality" size="sm" />
     </div>
   );
 }

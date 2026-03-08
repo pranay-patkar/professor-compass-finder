@@ -1,9 +1,8 @@
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { StarRating } from "@/components/StarRating";
+import { RatingBar } from "@/components/RatingBar";
 import { Professor } from "@/data/types";
-import { GitCompareArrows, User, BookOpen, Flame, Sparkles } from "lucide-react";
+import { GitCompareArrows } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface ProfessorCardProps {
@@ -17,87 +16,81 @@ export function ProfessorCard({ professor, isCompareSelected, onCompareToggle, s
   const navigate = useNavigate();
 
   return (
-    <Card
-      className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 animate-fade-in border-border/60"
+    <div
+      className="group cursor-pointer bg-card border-2 border-foreground shadow-[3px_3px_0_hsl(var(--foreground))] hover:shadow-[1px_1px_0_hsl(var(--foreground))] hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-150 animate-fade-in"
       onClick={() => navigate(`/professor/${professor.id}`)}
     >
-      <CardContent className="p-5">
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-full bg-navy flex items-center justify-center text-primary-foreground font-semibold text-sm">
+      <div className="p-3">
+        {/* Top row */}
+        <div className="flex items-start justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <div className="h-9 w-9 border-2 border-foreground bg-primary flex items-center justify-center text-primary-foreground font-bold text-xs">
               {professor.avatar}
             </div>
             <div>
-              <h3 className="font-semibold text-foreground leading-tight">{professor.name}</h3>
-              <Badge variant="secondary" className="mt-1 text-xs font-medium">
-                {professor.department}
-              </Badge>
+              <h3 className="font-bold text-foreground text-xs uppercase leading-tight tracking-wide">{professor.name}</h3>
+              <span className="text-2xs text-muted-foreground uppercase tracking-wider">{professor.department}</span>
             </div>
           </div>
           {showCompare && onCompareToggle && (
             <Button
               variant={isCompareSelected ? "default" : "outline"}
               size="sm"
-              className="h-8 text-xs"
+              className="h-6 text-2xs px-2 uppercase tracking-wider border-2"
               onClick={(e) => {
                 e.stopPropagation();
                 onCompareToggle(professor.id);
               }}
             >
-              <GitCompareArrows className="h-3.5 w-3.5 mr-1" />
-              {isCompareSelected ? "Selected" : "Compare"}
+              <GitCompareArrows className="h-3 w-3 mr-0.5" />
+              {isCompareSelected ? "✓" : "CMP"}
             </Button>
           )}
         </div>
 
-        <div className="flex flex-wrap gap-1.5 mb-3">
+        {/* Subjects */}
+        <div className="flex flex-wrap gap-1 mb-2">
           {professor.subjects.slice(0, 3).map((subject) => (
             <span
               key={subject}
-              className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-medium"
+              className="text-2xs px-1.5 py-0 border border-border text-muted-foreground uppercase tracking-wider"
             >
               {subject}
             </span>
           ))}
         </div>
 
-        <div className="flex items-center gap-1.5 mb-3">
-          <StarRating rating={professor.averageRating} size={14} />
-          <span className="text-sm font-semibold text-foreground">{professor.averageRating.toFixed(1)}</span>
-          <span className="text-xs text-muted-foreground">({professor.totalReviews})</span>
-        </div>
-
-        <div className="grid grid-cols-3 gap-2">
-          <div className="flex items-center gap-1.5 text-xs">
-            <Flame className="h-3.5 w-3.5 text-difficulty" />
-            <div>
-              <div className="text-muted-foreground">Difficulty</div>
-              <div className="font-semibold text-difficulty">{professor.averageDifficulty.toFixed(1)}</div>
+        {/* Ratings as bars */}
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <span className="text-2xs uppercase tracking-wider text-muted-foreground w-14">Rating</span>
+            <div className="flex-1">
+              <RatingBar value={professor.averageRating} color="quality" />
             </div>
           </div>
-          <div className="flex items-center gap-1.5 text-xs">
-            <Sparkles className="h-3.5 w-3.5 text-engagement" />
-            <div>
-              <div className="text-muted-foreground">Engagement</div>
-              <div className="font-semibold text-engagement">{professor.engagementScore.toFixed(1)}</div>
+          <div className="flex items-center gap-2">
+            <span className="text-2xs uppercase tracking-wider text-muted-foreground w-14">Diff.</span>
+            <div className="flex-1">
+              <RatingBar value={professor.averageDifficulty} color="difficulty" />
             </div>
           </div>
-          <div className="flex items-center gap-1.5 text-xs">
-            <BookOpen className="h-3.5 w-3.5 text-muted-foreground" />
-            <div>
-              <div className="text-muted-foreground">Style</div>
-              <div className="font-medium text-foreground truncate">{professor.teachingStyle.split("-")[0]}</div>
+          <div className="flex items-center gap-2">
+            <span className="text-2xs uppercase tracking-wider text-muted-foreground w-14">Engage</span>
+            <div className="flex-1">
+              <RatingBar value={professor.engagementScore} color="engagement" />
             </div>
           </div>
         </div>
 
-        {professor.yearsOfExperience && (
-          <div className="mt-3 pt-3 border-t flex items-center gap-1.5 text-xs text-muted-foreground">
-            <User className="h-3.5 w-3.5" />
-            {professor.yearsOfExperience} years of experience
-          </div>
-        )}
-      </CardContent>
-    </Card>
+        {/* Footer */}
+        <div className="mt-2 pt-2 border-t border-border flex items-center justify-between text-2xs text-muted-foreground uppercase tracking-wider">
+          <span>{professor.totalReviews} reviews</span>
+          <span>{professor.teachingStyle}</span>
+          {professor.yearsOfExperience && (
+            <span>{professor.yearsOfExperience}yr exp</span>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
