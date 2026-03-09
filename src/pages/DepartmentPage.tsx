@@ -12,8 +12,8 @@ export default function DepartmentPage() {
 
   if (!departments.includes(dept)) {
     return (
-      <div className="flex items-center justify-center h-[calc(100vh-3rem)]">
-        <p className="text-muted-foreground text-xs uppercase tracking-wider">Department not found.</p>
+      <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
+        <p className="text-muted-foreground text-sm">Department not found.</p>
       </div>
     );
   }
@@ -22,31 +22,31 @@ export default function DepartmentPage() {
   const topRated = getTopRatedByDepartment(dept, 3);
 
   return (
-    <div className="max-w-5xl mx-auto p-4 animate-fade-in">
+    <div className="max-w-5xl mx-auto p-8 animate-fade-in">
       <Button
-        variant="outline"
+        variant="ghost"
         size="sm"
         onClick={() => navigate(-1)}
-        className="mb-3 text-2xs uppercase tracking-wider border-2 border-foreground h-7 px-2"
+        className="mb-6 text-sm rounded-lg text-muted-foreground hover:text-foreground"
       >
-        <ArrowLeft className="h-3 w-3 mr-1" /> Back
+        <ArrowLeft className="h-4 w-4 mr-1.5" /> Back
       </Button>
 
-      <div className="mb-6 border-2 border-foreground bg-card p-4 shadow-[4px_4px_0_hsl(var(--foreground))]">
-        <h1 className="font-display text-lg text-foreground uppercase tracking-wide">{dept}</h1>
-        <p className="text-2xs text-muted-foreground uppercase tracking-wider mt-0.5">
-          <Users className="inline h-3.5 w-3.5 mr-1" />
+      <div className="mb-10 glass rounded-2xl p-8">
+        <h1 className="font-serif text-3xl font-bold text-foreground">{dept}</h1>
+        <p className="text-sm text-muted-foreground mt-2 flex items-center gap-1.5">
+          <Users className="h-4 w-4" />
           {allProfs.length} professors
         </p>
       </div>
 
       {topRated.length > 0 && (
-        <div className="mb-6">
-          <div className="flex items-center gap-2 mb-3">
-            <Trophy className="h-4 w-4 text-primary" />
-            <h2 className="font-display text-sm text-foreground uppercase tracking-wide">Top Rated</h2>
+        <div className="mb-10">
+          <div className="flex items-center gap-2 mb-5">
+            <Trophy className="h-5 w-5 text-accent" />
+            <h2 className="font-serif text-xl font-bold text-foreground">Top Rated</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {topRated.map(p => (
               <ProfessorCard key={p.id} professor={p} showCompare={false} />
             ))}
@@ -55,8 +55,8 @@ export default function DepartmentPage() {
       )}
 
       <div>
-        <h2 className="font-display text-sm text-foreground uppercase tracking-wide mb-3">All Professors</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        <h2 className="font-serif text-xl font-bold text-foreground mb-5">All Professors</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {allProfs.map(p => (
             <ProfessorCard key={p.id} professor={p} showCompare={false} />
           ))}

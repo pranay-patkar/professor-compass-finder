@@ -9,7 +9,7 @@ interface StarRatingProps {
 
 export function StarRating({ rating, max = 5, className = "" }: StarRatingProps) {
   return (
-    <div className={`w-24 ${className}`}>
+    <div className={`w-28 ${className}`}>
       <RatingBar value={rating} max={max} color="quality" size="sm" />
     </div>
   );
