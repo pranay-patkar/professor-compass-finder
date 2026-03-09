@@ -8,35 +8,37 @@ export function AppHeader() {
   const totalReviews = professors.reduce((sum, p) => sum + p.totalReviews, 0);
 
   return (
-    <header className="h-12 border-b-3 border-foreground bg-card flex items-center px-4 sticky top-0 z-50">
-      <Link to="/" className="flex items-center gap-2 mr-6">
-        <GraduationCap className="h-5 w-5 text-primary" />
-        <span className="font-display text-foreground text-sm tracking-tight uppercase">ProfRate</span>
+    <header className="h-16 border-b border-border bg-background/80 backdrop-blur-md flex items-center px-8 sticky top-0 z-50">
+      <Link to="/" className="flex items-center gap-3 mr-8">
+        <div className="h-9 w-9 rounded-xl gradient-gold flex items-center justify-center">
+          <GraduationCap className="h-5 w-5 text-accent-foreground" />
+        </div>
+        <span className="font-serif text-xl font-bold text-foreground tracking-tight">ProfRate</span>
       </Link>
 
-      <nav className="flex items-center gap-0.5 flex-1">
+      <nav className="flex items-center gap-1 flex-1">
         <Link
           to="/"
-          className={`px-2.5 py-1 text-xs uppercase tracking-wider border-2 transition-colors ${
+          className={`px-4 py-2 text-sm rounded-lg transition-all duration-200 ${
             isActive("/")
-              ? "border-foreground bg-foreground text-background font-bold"
-              : "border-transparent text-muted-foreground hover:text-foreground hover:border-foreground"
+              ? "bg-primary text-primary-foreground font-medium shadow-md"
+              : "text-muted-foreground hover:text-foreground hover:bg-muted"
           }`}
         >
-          <Compass className="inline h-3.5 w-3.5 mr-1" />
+          <Compass className="inline h-4 w-4 mr-1.5 -mt-0.5" />
           Explore
         </Link>
         <div className="relative group">
-          <button className="px-2.5 py-1 text-xs uppercase tracking-wider border-2 border-transparent text-muted-foreground hover:text-foreground hover:border-foreground transition-colors">
-            <Building2 className="inline h-3.5 w-3.5 mr-1" />
-            Depts
+          <button className="px-4 py-2 text-sm rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-all duration-200">
+            <Building2 className="inline h-4 w-4 mr-1.5 -mt-0.5" />
+            Departments
           </button>
-          <div className="absolute left-0 top-full mt-0 w-52 bg-card border-2 border-foreground shadow-[4px_4px_0_hsl(var(--foreground))] py-0.5 hidden group-hover:block z-50">
+          <div className="absolute left-0 top-full mt-1 w-56 glass-strong rounded-xl py-2 hidden group-hover:block z-50">
             {departments.map(dept => (
               <Link
                 key={dept}
                 to={`/department/${encodeURIComponent(dept)}`}
-                className="block px-3 py-1.5 text-xs text-foreground hover:bg-primary hover:text-primary-foreground transition-colors uppercase tracking-wide"
+                className="block px-4 py-2.5 text-sm text-foreground hover:bg-accent/10 hover:text-accent transition-colors"
               >
                 {dept}
               </Link>
@@ -45,11 +47,11 @@ export function AppHeader() {
         </div>
       </nav>
 
-      <div className="flex items-center gap-3 text-2xs text-muted-foreground uppercase tracking-wider">
-        <span className="border border-border px-2 py-0.5">
-          📊 {totalReviews} reviews logged
+      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+        <span className="bg-muted px-3 py-1.5 rounded-lg text-xs font-medium">
+          {totalReviews} reviews
         </span>
-        <span className="hidden md:inline">Built by students, for students.</span>
+        <span className="hidden md:inline text-xs italic">Built by students, for students.</span>
       </div>
     </header>
   );

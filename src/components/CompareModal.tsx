@@ -13,8 +13,8 @@ export function CompareModal({ ids, onClose }: CompareModalProps) {
 
   const rows: { label: string; render: (p: typeof profs[0]) => React.ReactNode }[] = [
     {
-      label: "Dept",
-      render: p => <span className="text-2xs uppercase tracking-wider border border-border px-1.5 py-0.5">{p.department}</span>,
+      label: "Department",
+      render: p => <span className="text-sm bg-muted px-2.5 py-1 rounded-lg">{p.department}</span>,
     },
     {
       label: "Rating",
@@ -30,46 +30,46 @@ export function CompareModal({ ids, onClose }: CompareModalProps) {
     },
     {
       label: "Style",
-      render: p => <span className="text-xs uppercase tracking-wide">{p.teachingStyle}</span>,
+      render: p => <span className="text-sm">{p.teachingStyle}</span>,
     },
     {
       label: "Subjects",
       render: p => (
-        <div className="flex flex-wrap gap-1">
+        <div className="flex flex-wrap gap-1.5">
           {p.subjects.map(s => (
-            <span key={s} className="text-2xs px-1.5 py-0 border border-border uppercase tracking-wider">{s}</span>
+            <span key={s} className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">{s}</span>
           ))}
         </div>
       ),
     },
     {
       label: "Experience",
-      render: p => <span className="text-xs font-bold tabular-nums">{p.yearsOfExperience ? `${p.yearsOfExperience}yr` : "N/A"}</span>,
+      render: p => <span className="text-sm font-semibold tabular-nums">{p.yearsOfExperience ? `${p.yearsOfExperience} years` : "N/A"}</span>,
     },
     {
       label: "Reviews",
-      render: p => <span className="text-xs font-bold tabular-nums">{p.totalReviews}</span>,
+      render: p => <span className="text-sm font-semibold tabular-nums">{p.totalReviews}</span>,
     },
   ];
 
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl border-2 border-foreground rounded-none shadow-[6px_6px_0_hsl(var(--foreground))]">
+      <DialogContent className="max-w-2xl rounded-2xl glass-strong border-border">
         <DialogHeader>
-          <DialogTitle className="font-display text-sm uppercase tracking-wider">Compare Professors</DialogTitle>
+          <DialogTitle className="font-serif text-xl">Compare Professors</DialogTitle>
         </DialogHeader>
         <div className="overflow-x-auto">
-          <table className="w-full text-xs">
+          <table className="w-full text-sm">
             <thead>
-              <tr className="border-b-2 border-foreground">
-                <th className="text-left py-2 pr-3 text-2xs uppercase tracking-widest text-muted-foreground font-bold w-28">Metric</th>
+              <tr className="border-b border-border">
+                <th className="text-left py-3 pr-4 text-xs uppercase tracking-wide text-muted-foreground font-semibold w-28">Metric</th>
                 {profs.map(p => (
-                  <th key={p.id} className="text-left py-2 px-3">
-                    <div className="flex items-center gap-2">
-                      <div className="h-7 w-7 border-2 border-foreground bg-primary flex items-center justify-center text-primary-foreground text-2xs font-bold">
+                  <th key={p.id} className="text-left py-3 px-4">
+                    <div className="flex items-center gap-3">
+                      <div className="h-9 w-9 rounded-xl gradient-navy flex items-center justify-center text-primary-foreground text-xs font-bold shadow-sm">
                         {p.avatar}
                       </div>
-                      <span className="font-bold uppercase tracking-wide text-2xs">{p.name}</span>
+                      <span className="font-serif font-bold text-sm">{p.name}</span>
                     </div>
                   </th>
                 ))}
@@ -77,12 +77,12 @@ export function CompareModal({ ids, onClose }: CompareModalProps) {
             </thead>
             <tbody>
               {rows.map(row => (
-                <tr key={row.label} className="border-b border-border last:border-0">
-                  <td className="py-2 pr-3">
-                    <span className="text-2xs uppercase tracking-widest text-muted-foreground font-bold">{row.label}</span>
+                <tr key={row.label} className="border-b border-border/50 last:border-0">
+                  <td className="py-3 pr-4">
+                    <span className="text-xs uppercase tracking-wide text-muted-foreground font-semibold">{row.label}</span>
                   </td>
                   {profs.map(p => (
-                    <td key={p.id} className="py-2 px-3">{row.render(p)}</td>
+                    <td key={p.id} className="py-3 px-4">{row.render(p)}</td>
                   ))}
                 </tr>
               ))}

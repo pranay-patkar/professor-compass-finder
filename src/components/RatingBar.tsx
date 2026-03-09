@@ -9,22 +9,22 @@ interface RatingBarProps {
 export function RatingBar({ value, max = 5, color = 'quality', size = 'sm', showValue = true }: RatingBarProps) {
   const pct = (value / max) * 100;
   const colorMap = {
-    quality: 'bg-primary',
-    difficulty: 'bg-accent',
+    quality: 'bg-quality',
+    difficulty: 'bg-difficulty',
     engagement: 'bg-engagement',
     muted: 'bg-muted-foreground',
   };
 
   return (
-    <div className="flex items-center gap-1.5">
-      <div className={`flex-1 bg-muted border border-border ${size === 'sm' ? 'h-2' : 'h-3'}`}>
+    <div className="flex items-center gap-2">
+      <div className={`flex-1 bg-muted rounded-full overflow-hidden ${size === 'sm' ? 'h-1.5' : 'h-2.5'}`}>
         <div
-          className={`h-full ${colorMap[color]} transition-all`}
+          className={`h-full rounded-full ${colorMap[color]} transition-all duration-500`}
           style={{ width: `${pct}%` }}
         />
       </div>
       {showValue && (
-        <span className="text-2xs font-bold tabular-nums w-6 text-right">{value.toFixed(1)}</span>
+        <span className="text-xs font-semibold tabular-nums w-7 text-right text-muted-foreground">{value.toFixed(1)}</span>
       )}
     </div>
   );

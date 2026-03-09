@@ -47,7 +47,7 @@ export function RatingForm({ professor }: RatingFormProps) {
     return (
       <Button
         onClick={() => setOpen(true)}
-        className="w-full mt-4 uppercase tracking-wider text-xs border-2 border-foreground bg-primary text-primary-foreground hover:bg-primary/90 rounded-none shadow-[3px_3px_0_hsl(var(--foreground))] hover:shadow-[1px_1px_0_hsl(var(--foreground))] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+        className="w-full mt-6 rounded-xl h-11 text-sm font-semibold gradient-gold text-accent-foreground border-0 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
       >
         Rate this Professor
       </Button>
@@ -55,60 +55,60 @@ export function RatingForm({ professor }: RatingFormProps) {
   }
 
   return (
-    <div className="mt-4 border-2 border-foreground bg-card p-4">
-      <h3 className="font-display text-xs uppercase tracking-wider mb-3">Submit a Rating</h3>
-      <form onSubmit={handleSubmit} className="space-y-3">
-        <div className="grid grid-cols-2 gap-2">
+    <div className="mt-6 glass rounded-xl p-5">
+      <h3 className="font-serif text-lg font-bold mb-4">Submit a Rating</h3>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-2 gap-3">
           <div>
-            <Label className="text-2xs uppercase tracking-widest font-bold">Course *</Label>
+            <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Course *</Label>
             <Select value={form.course} onValueChange={v => setForm(f => ({ ...f, course: v }))}>
-              <SelectTrigger className="h-8 text-xs mt-1 border-2 border-foreground rounded-none"><SelectValue placeholder="Select" /></SelectTrigger>
-              <SelectContent className="border-2 border-foreground rounded-none">
-                {professor.subjects.map(s => <SelectItem key={s} value={s} className="text-xs uppercase">{s}</SelectItem>)}
+              <SelectTrigger className="h-10 text-sm mt-1.5 rounded-lg"><SelectValue placeholder="Select course" /></SelectTrigger>
+              <SelectContent className="rounded-xl">
+                {professor.subjects.map(s => <SelectItem key={s} value={s} className="text-sm">{s}</SelectItem>)}
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label className="text-2xs uppercase tracking-widest font-bold">Year *</Label>
+            <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Year *</Label>
             <Select value={form.year} onValueChange={v => setForm(f => ({ ...f, year: v as AcademicYear }))}>
-              <SelectTrigger className="h-8 text-xs mt-1 border-2 border-foreground rounded-none"><SelectValue placeholder="Select" /></SelectTrigger>
-              <SelectContent className="border-2 border-foreground rounded-none">
-                {yearKeys.map(y => <SelectItem key={y} value={y} className="text-xs uppercase">{academicYearLabels[y]}</SelectItem>)}
+              <SelectTrigger className="h-10 text-sm mt-1.5 rounded-lg"><SelectValue placeholder="Select year" /></SelectTrigger>
+              <SelectContent className="rounded-xl">
+                {yearKeys.map(y => <SelectItem key={y} value={y} className="text-sm">{academicYearLabels[y]}</SelectItem>)}
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label className="text-2xs uppercase tracking-widest font-bold">Semester *</Label>
+            <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Semester *</Label>
             <Input
-              className="h-8 text-xs mt-1 border-2 border-foreground rounded-none"
+              className="h-10 text-sm mt-1.5 rounded-lg"
               placeholder="e.g., Fall 2024"
               value={form.semester}
               onChange={e => setForm(f => ({ ...f, semester: e.target.value }))}
             />
           </div>
           <div>
-            <Label className="text-2xs uppercase tracking-widest font-bold">Grade (opt.)</Label>
+            <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Grade (opt.)</Label>
             <Select value={form.grade} onValueChange={v => setForm(f => ({ ...f, grade: v }))}>
-              <SelectTrigger className="h-8 text-xs mt-1 border-2 border-foreground rounded-none"><SelectValue placeholder="Select" /></SelectTrigger>
-              <SelectContent className="border-2 border-foreground rounded-none">
-                {grades.map(g => <SelectItem key={g} value={g} className="text-xs">{g}</SelectItem>)}
+              <SelectTrigger className="h-10 text-sm mt-1.5 rounded-lg"><SelectValue placeholder="Select grade" /></SelectTrigger>
+              <SelectContent className="rounded-xl">
+                {grades.map(g => <SelectItem key={g} value={g} className="text-sm">{g}</SelectItem>)}
               </SelectContent>
             </Select>
           </div>
         </div>
 
         <div>
-          <Label className="text-2xs uppercase tracking-widest font-bold">Attendance *</Label>
-          <div className="flex gap-1 mt-1">
+          <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Attendance *</Label>
+          <div className="flex gap-2 mt-1.5">
             {attendancePolicies.map(a => (
               <button
                 key={a}
                 type="button"
                 onClick={() => setForm(f => ({ ...f, attendance: a }))}
-                className={`flex-1 py-1.5 text-2xs uppercase tracking-wider border-2 transition-all ${
+                className={`flex-1 py-2.5 text-sm rounded-lg transition-all duration-200 ${
                   form.attendance === a
-                    ? "border-foreground bg-foreground text-background font-bold"
-                    : "border-border text-muted-foreground hover:border-foreground"
+                    ? "bg-primary text-primary-foreground font-medium shadow-sm"
+                    : "bg-muted text-muted-foreground hover:bg-secondary hover:text-foreground"
                 }`}
               >
                 {a}
@@ -117,16 +117,16 @@ export function RatingForm({ professor }: RatingFormProps) {
           </div>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-3">
           {[
-            { key: "rating", label: "Rating", color: "text-primary" },
-            { key: "difficulty", label: "Difficulty", color: "text-accent" },
+            { key: "rating", label: "Rating", color: "text-quality" },
+            { key: "difficulty", label: "Difficulty", color: "text-difficulty" },
             { key: "engagement", label: "Engagement", color: "text-engagement" },
           ].map(({ key, label, color }) => (
             <div key={key}>
-              <div className="flex items-center justify-between mb-0.5">
-                <Label className="text-2xs uppercase tracking-widest font-bold">{label}</Label>
-                <span className={`text-xs font-bold tabular-nums ${color}`}>{form[key as keyof typeof form]}/5</span>
+              <div className="flex items-center justify-between mb-1">
+                <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</Label>
+                <span className={`text-sm font-bold tabular-nums ${color}`}>{form[key as keyof typeof form]}/5</span>
               </div>
               <Slider
                 value={[form[key as keyof typeof form] as number]}
@@ -140,9 +140,9 @@ export function RatingForm({ professor }: RatingFormProps) {
         </div>
 
         <div>
-          <Label className="text-2xs uppercase tracking-widest font-bold">Comment</Label>
+          <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Comment</Label>
           <Textarea
-            className="mt-1 text-xs border-2 border-foreground rounded-none"
+            className="mt-1.5 text-sm rounded-lg"
             placeholder="Share your experience..."
             value={form.comment}
             onChange={e => setForm(f => ({ ...f, comment: e.target.value }))}
@@ -150,11 +150,11 @@ export function RatingForm({ professor }: RatingFormProps) {
           />
         </div>
 
-        <div className="flex gap-2">
-          <Button type="submit" className="flex-1 uppercase tracking-wider text-xs border-2 rounded-none shadow-[3px_3px_0_hsl(var(--foreground))] hover:shadow-[1px_1px_0_hsl(var(--foreground))] hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
-            Submit
+        <div className="flex gap-3 pt-1">
+          <Button type="submit" className="flex-1 rounded-xl h-10 text-sm font-semibold gradient-gold text-accent-foreground border-0 shadow-md hover:shadow-lg transition-all">
+            Submit Review
           </Button>
-          <Button type="button" variant="outline" onClick={() => setOpen(false)} className="uppercase tracking-wider text-xs border-2 border-foreground rounded-none">
+          <Button type="button" variant="outline" onClick={() => setOpen(false)} className="rounded-xl h-10 text-sm px-6">
             Cancel
           </Button>
         </div>
